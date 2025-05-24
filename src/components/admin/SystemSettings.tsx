@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, Database, Shield, Bell, Sync, Globe, Server, Clock } from 'lucide-react';
+import { Settings, Database, Shield, Bell, RefreshCw, Globe, Server, Clock } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
 interface SystemSettingsProps {
@@ -99,7 +99,7 @@ const SystemSettings = ({ userRole }: SystemSettingsProps) => {
                 <span>Security</span>
               </TabsTrigger>
               <TabsTrigger value="pos" className="flex items-center space-x-2">
-                <Sync className="h-4 w-4" />
+                <RefreshCw className="h-4 w-4" />
                 <span>POS Sync</span>
               </TabsTrigger>
               <TabsTrigger value="notifications" className="flex items-center space-x-2">
@@ -271,7 +271,7 @@ const SystemSettings = ({ userRole }: SystemSettingsProps) => {
                           </Badge>
                         </div>
                         <Button onClick={handleSyncNow} disabled={!canEditSettings} className="w-full">
-                          <Sync className="h-4 w-4 mr-2" />
+                          <RefreshCw className="h-4 w-4 mr-2" />
                           Sync Now
                         </Button>
                       </div>
