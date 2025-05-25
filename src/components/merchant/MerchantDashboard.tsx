@@ -4,10 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Building2, Package, MapPin, BarChart3, LogOut, Store, Plus } from 'lucide-react';
-import MerchantInventory from './MerchantInventory';
-import MerchantLocations from './MerchantLocations';
-import MerchantStores from './MerchantStores';
+import { Building2, Package, MapPin, BarChart3, LogOut, Database } from 'lucide-react';
+import InventoryManager from './InventoryManager';
 import MerchantAnalytics from './MerchantAnalytics';
 
 interface User {
@@ -23,7 +21,7 @@ interface MerchantDashboardProps {
 }
 
 const MerchantDashboard = ({ user, onLogout }: MerchantDashboardProps) => {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState('inventory');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
@@ -59,34 +57,13 @@ const MerchantDashboard = ({ user, onLogout }: MerchantDashboardProps) => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5 bg-white/50 backdrop-blur-sm p-1 rounded-xl">
-            <TabsTrigger 
-              value="overview" 
-              className="flex items-center space-x-2 data-[state=active]:bg-white data-[state=active]:shadow-sm"
-            >
-              <BarChart3 className="h-4 w-4" />
-              <span>Overview</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="locations" 
-              className="flex items-center space-x-2 data-[state=active]:bg-white data-[state=active]:shadow-sm"
-            >
-              <MapPin className="h-4 w-4" />
-              <span>Locations</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="stores" 
-              className="flex items-center space-x-2 data-[state=active]:bg-white data-[state=active]:shadow-sm"
-            >
-              <Store className="h-4 w-4" />
-              <span>Stores</span>
-            </TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 bg-white/50 backdrop-blur-sm p-1 rounded-xl">
             <TabsTrigger 
               value="inventory" 
               className="flex items-center space-x-2 data-[state=active]:bg-white data-[state=active]:shadow-sm"
             >
-              <Package className="h-4 w-4" />
-              <span>Products</span>
+              <Database className="h-4 w-4" />
+              <span>Inventory Management</span>
             </TabsTrigger>
             <TabsTrigger 
               value="analytics" 
@@ -97,20 +74,8 @@ const MerchantDashboard = ({ user, onLogout }: MerchantDashboardProps) => {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="overview" className="space-y-6">
-            <MerchantAnalytics />
-          </TabsContent>
-
-          <TabsContent value="locations" className="space-y-6">
-            <MerchantLocations />
-          </TabsContent>
-
-          <TabsContent value="stores" className="space-y-6">
-            <MerchantStores />
-          </TabsContent>
-
           <TabsContent value="inventory" className="space-y-6">
-            <MerchantInventory />
+            <InventoryManager />
           </TabsContent>
 
           <TabsContent value="analytics" className="space-y-6">

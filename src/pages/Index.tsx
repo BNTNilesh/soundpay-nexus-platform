@@ -1,9 +1,8 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Building2, Users, Package, ShieldCheck, BarChart3, Globe, Lock, UserPlus } from 'lucide-react';
+import { Building2, Users, Package, ShieldCheck, BarChart3, Globe, Lock, LogIn } from 'lucide-react';
 import LoginForm from '@/components/auth/LoginForm';
 import AdminDashboard from '@/components/admin/AdminDashboard';
 import MerchantDashboard from '@/components/merchant/MerchantDashboard';
@@ -18,11 +17,12 @@ interface User {
 const Index = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [showLogin, setShowLogin] = useState(false);
-  const [showMerchantRegistration, setShowMerchantRegistration] = useState(false);
+  const [showMerchantLogin, setShowMerchantLogin] = useState(false);
 
   const handleLogin = (user: User) => {
     setCurrentUser(user);
     setShowLogin(false);
+    setShowMerchantLogin(false);
   };
 
   const handleLogout = () => {
@@ -37,8 +37,11 @@ const Index = () => {
     }
   }
 
-  if (showLogin) {
-    return <LoginForm onLogin={handleLogin} onBack={() => setShowLogin(false)} />;
+  if (showLogin || showMerchantLogin) {
+    return <LoginForm onLogin={handleLogin} onBack={() => {
+      setShowLogin(false);
+      setShowMerchantLogin(false);
+    }} />;
   }
 
   return (
@@ -72,13 +75,13 @@ const Index = () => {
                 Admin Login
               </Button>
               <Button 
-                onClick={() => setShowMerchantRegistration(true)}
+                onClick={() => setShowMerchantLogin(true)}
                 variant="outline" 
                 size="lg"
-                className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300 transform hover:scale-105"
+                className="border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300 transform hover:scale-105"
               >
-                <UserPlus className="mr-2 h-5 w-5" />
-                Merchant Registration
+                <LogIn className="mr-2 h-5 w-5" />
+                Merchant Login
               </Button>
             </div>
           </div>
