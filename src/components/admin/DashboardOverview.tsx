@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,9 +6,18 @@ import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Users, Building2, Package, TrendingUp, ShoppingCart, DollarSign, Activity, Clock, RefreshCw, Settings, Eye, Edit, Trash2 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import AddUserForm from './AddUserForm';
+import MerchantRegistrationForm from './MerchantRegistrationForm';
+import POSSyncManager from './POSSyncManager';
+import ProductManager from './ProductManager';
 
 const DashboardOverview = () => {
   const { toast } = useToast();
+  const [isAddUserOpen, setIsAddUserOpen] = useState(false);
+  const [isMerchantFormOpen, setIsMerchantFormOpen] = useState(false);
+  const [isPOSSyncOpen, setIsPOSSyncOpen] = useState(false);
+  const [isProductManagerOpen, setIsProductManagerOpen] = useState(false);
+  
   const [merchants, setMerchants] = useState([
     { id: 1, name: "TechStore Inc.", email: "contact@techstore.com", status: "Active", revenue: "$45,230", products: 127, locations: 3 },
     { id: 2, name: "Fashion Hub", email: "info@fashionhub.com", status: "Active", revenue: "$32,180", products: 89, locations: 2 },
@@ -33,24 +41,15 @@ const DashboardOverview = () => {
   ];
 
   const handleAddUser = () => {
-    toast({
-      title: "Add User",
-      description: "User creation form would open here.",
-    });
+    setIsAddUserOpen(true);
   };
 
   const handleNewMerchant = () => {
-    toast({
-      title: "New Merchant",
-      description: "Merchant registration form would open here.",
-    });
+    setIsMerchantFormOpen(true);
   };
 
   const handleSyncPOS = () => {
-    toast({
-      title: "POS Sync Started",
-      description: "Synchronizing with SoundPayment POS system...",
-    });
+    setIsPOSSyncOpen(true);
   };
 
   const handleViewReports = () => {
@@ -61,10 +60,7 @@ const DashboardOverview = () => {
   };
 
   const handleManageProducts = () => {
-    toast({
-      title: "Product Management",
-      description: "Product inventory management would open here.",
-    });
+    setIsProductManagerOpen(true);
   };
 
   const handleSystemSettings = () => {
@@ -72,6 +68,15 @@ const DashboardOverview = () => {
       title: "System Settings",
       description: "System configuration panel would open here.",
     });
+  };
+
+  const handleUserAdded = (user: any) => {
+    // In a real app, this would update the user list
+    console.log('New user added:', user);
+  };
+
+  const handleMerchantAdded = (merchant: any) => {
+    setMerchants([...merchants, merchant]);
   };
 
   const getActivityIcon = (type: string) => {
@@ -311,6 +316,29 @@ const DashboardOverview = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Modals */}
+      <AddUserForm 
+        isOpen={isAddUserOpen} 
+        onClose={() => setIsAddUserOpen(false)}
+        onUserAdded={handleUserAdded}
+      />
+      
+      <MerchantRegistrationForm 
+        isOpen={isMerchantFormOpen} 
+        onClose={() => setIsMerchantFormOpen(false)}
+        onMerchantAdded={handleMerchantAdded}
+      />
+      
+      <POSSyncManager 
+        isOpen={isPOSSyncOpen} 
+        onClose={() => setIsPOSSyncOpen(false)}
+      />
+      
+      <ProductManager 
+        isOpen={isProductManagerOpen} 
+        onClose={() => setIsProductManagerOpen(false)}
+      />
     </div>
   );
 };
