@@ -1,14 +1,27 @@
 
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Users, Building2, Package, TrendingUp, ShoppingCart, DollarSign, Activity, Clock } from 'lucide-react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Users, Building2, Package, TrendingUp, ShoppingCart, DollarSign, Activity, Clock, RefreshCw, Settings, Eye, Edit, Trash2 } from 'lucide-react';
+import { useToast } from "@/hooks/use-toast";
 
 const DashboardOverview = () => {
+  const { toast } = useToast();
+  const [merchants, setMerchants] = useState([
+    { id: 1, name: "TechStore Inc.", email: "contact@techstore.com", status: "Active", revenue: "$45,230", products: 127, locations: 3 },
+    { id: 2, name: "Fashion Hub", email: "info@fashionhub.com", status: "Active", revenue: "$32,180", products: 89, locations: 2 },
+    { id: 3, name: "Green Market", email: "hello@greenmarket.com", status: "Pending", revenue: "$12,450", products: 45, locations: 1 },
+    { id: 4, name: "Sports Central", email: "admin@sportscentral.com", status: "Active", revenue: "$67,890", products: 234, locations: 5 },
+    { id: 5, name: "Book Corner", email: "books@bookcorner.com", status: "Inactive", revenue: "$8,920", products: 156, locations: 1 },
+  ]);
+
   const stats = [
     { title: "Total Users", value: "247", change: "+12%", icon: Users, color: "from-blue-500 to-indigo-500" },
-    { title: "Active Merchants", value: "89", change: "+8%", icon: Building2, color: "from-green-500 to-emerald-500" },
-    { title: "Products", value: "15,234", change: "+24%", icon: Package, color: "from-purple-500 to-pink-500" },
+    { title: "Active Merchants", value: merchants.filter(m => m.status === "Active").length.toString(), change: "+8%", icon: Building2, color: "from-green-500 to-emerald-500" },
+    { title: "Products", value: merchants.reduce((acc, m) => acc + m.products, 0).toString(), change: "+24%", icon: Package, color: "from-purple-500 to-pink-500" },
     { title: "Revenue", value: "$342K", change: "+18%", icon: DollarSign, color: "from-orange-500 to-red-500" },
   ];
 
@@ -19,6 +32,48 @@ const DashboardOverview = () => {
     { action: "System sync completed", user: "SoundPayment POS", time: "2 hours ago", type: "sync" },
   ];
 
+  const handleAddUser = () => {
+    toast({
+      title: "Add User",
+      description: "User creation form would open here.",
+    });
+  };
+
+  const handleNewMerchant = () => {
+    toast({
+      title: "New Merchant",
+      description: "Merchant registration form would open here.",
+    });
+  };
+
+  const handleSyncPOS = () => {
+    toast({
+      title: "POS Sync Started",
+      description: "Synchronizing with SoundPayment POS system...",
+    });
+  };
+
+  const handleViewReports = () => {
+    toast({
+      title: "Reports",
+      description: "Analytics and reports dashboard would open here.",
+    });
+  };
+
+  const handleManageProducts = () => {
+    toast({
+      title: "Product Management",
+      description: "Product inventory management would open here.",
+    });
+  };
+
+  const handleSystemSettings = () => {
+    toast({
+      title: "System Settings",
+      description: "System configuration panel would open here.",
+    });
+  };
+
   const getActivityIcon = (type: string) => {
     switch (type) {
       case 'registration': return <Users className="h-4 w-4 text-green-600" />;
@@ -26,6 +81,15 @@ const DashboardOverview = () => {
       case 'permission': return <Activity className="h-4 w-4 text-purple-600" />;
       case 'sync': return <TrendingUp className="h-4 w-4 text-orange-600" />;
       default: return <Clock className="h-4 w-4 text-gray-600" />;
+    }
+  };
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'Active': return <Badge className="bg-green-100 text-green-700">Active</Badge>;
+      case 'Pending': return <Badge className="bg-yellow-100 text-yellow-700">Pending</Badge>;
+      case 'Inactive': return <Badge className="bg-red-100 text-red-700">Inactive</Badge>;
+      default: return <Badge className="bg-gray-100 text-gray-700">{status}</Badge>;
     }
   };
 
@@ -52,6 +116,60 @@ const DashboardOverview = () => {
           </Card>
         ))}
       </div>
+
+      {/* Merchants List */}
+      <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2">
+            <Building2 className="h-5 w-5 text-blue-600" />
+            <span>Merchants Overview</span>
+          </CardTitle>
+          <CardDescription>Manage and monitor all registered merchants</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Merchant</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Revenue</TableHead>
+                <TableHead>Products</TableHead>
+                <TableHead>Locations</TableHead>
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {merchants.map((merchant) => (
+                <TableRow key={merchant.id}>
+                  <TableCell>
+                    <div>
+                      <p className="font-medium text-gray-900">{merchant.name}</p>
+                      <p className="text-sm text-gray-600">{merchant.email}</p>
+                    </div>
+                  </TableCell>
+                  <TableCell>{getStatusBadge(merchant.status)}</TableCell>
+                  <TableCell className="font-medium">{merchant.revenue}</TableCell>
+                  <TableCell>{merchant.products}</TableCell>
+                  <TableCell>{merchant.locations}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center space-x-2">
+                      <Button variant="ghost" size="sm">
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                      <Button variant="ghost" size="sm">
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button variant="ghost" size="sm">
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Activity */}
@@ -131,24 +249,65 @@ const DashboardOverview = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {[
-              { label: "Add User", icon: Users, color: "bg-blue-500" },
-              { label: "New Merchant", icon: Building2, color: "bg-green-500" },
-              { label: "Sync POS", icon: TrendingUp, color: "bg-purple-500" },
-              { label: "View Reports", icon: Activity, color: "bg-orange-500" },
-              { label: "Manage Products", icon: Package, color: "bg-pink-500" },
-              { label: "System Settings", icon: Activity, color: "bg-indigo-500" },
-            ].map((action, index) => (
-              <button
-                key={index}
-                className="flex flex-col items-center p-4 rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200 text-center group"
-              >
-                <div className={`p-3 ${action.color} rounded-full mb-2 group-hover:scale-110 transition-transform duration-200`}>
-                  <action.icon className="h-5 w-5 text-white" />
-                </div>
-                <span className="text-sm font-medium text-gray-700">{action.label}</span>
-              </button>
-            ))}
+            <button
+              onClick={handleAddUser}
+              className="flex flex-col items-center p-4 rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200 text-center group"
+            >
+              <div className="p-3 bg-blue-500 rounded-full mb-2 group-hover:scale-110 transition-transform duration-200">
+                <Users className="h-5 w-5 text-white" />
+              </div>
+              <span className="text-sm font-medium text-gray-700">Add User</span>
+            </button>
+            
+            <button
+              onClick={handleNewMerchant}
+              className="flex flex-col items-center p-4 rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200 text-center group"
+            >
+              <div className="p-3 bg-green-500 rounded-full mb-2 group-hover:scale-110 transition-transform duration-200">
+                <Building2 className="h-5 w-5 text-white" />
+              </div>
+              <span className="text-sm font-medium text-gray-700">New Merchant</span>
+            </button>
+            
+            <button
+              onClick={handleSyncPOS}
+              className="flex flex-col items-center p-4 rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200 text-center group"
+            >
+              <div className="p-3 bg-purple-500 rounded-full mb-2 group-hover:scale-110 transition-transform duration-200">
+                <RefreshCw className="h-5 w-5 text-white" />
+              </div>
+              <span className="text-sm font-medium text-gray-700">Sync POS</span>
+            </button>
+            
+            <button
+              onClick={handleViewReports}
+              className="flex flex-col items-center p-4 rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200 text-center group"
+            >
+              <div className="p-3 bg-orange-500 rounded-full mb-2 group-hover:scale-110 transition-transform duration-200">
+                <Activity className="h-5 w-5 text-white" />
+              </div>
+              <span className="text-sm font-medium text-gray-700">View Reports</span>
+            </button>
+            
+            <button
+              onClick={handleManageProducts}
+              className="flex flex-col items-center p-4 rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200 text-center group"
+            >
+              <div className="p-3 bg-pink-500 rounded-full mb-2 group-hover:scale-110 transition-transform duration-200">
+                <Package className="h-5 w-5 text-white" />
+              </div>
+              <span className="text-sm font-medium text-gray-700">Manage Products</span>
+            </button>
+            
+            <button
+              onClick={handleSystemSettings}
+              className="flex flex-col items-center p-4 rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200 text-center group"
+            >
+              <div className="p-3 bg-indigo-500 rounded-full mb-2 group-hover:scale-110 transition-transform duration-200">
+                <Settings className="h-5 w-5 text-white" />
+              </div>
+              <span className="text-sm font-medium text-gray-700">System Settings</span>
+            </button>
           </div>
         </CardContent>
       </Card>
