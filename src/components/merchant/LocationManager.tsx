@@ -299,7 +299,7 @@ const LocationManager = ({ locations, setLocations, stores, onLocationUpdate }: 
                       )}
                       
                       <div className="flex items-center space-x-2 text-gray-600">
-                        <Store className="h-4 w-4" />
+                        <StoreIcon className="h-4 w-4" />
                         <span>Added: {location.createdAt}</span>
                       </div>
                     </div>
