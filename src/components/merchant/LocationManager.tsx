@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { MapPin, Plus, Edit, Trash2, Phone, Store, Building } from 'lucide-react';
+import { MapPin, Plus, Edit, Trash2, Phone, Store as StoreIcon, Building } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Location, Store } from './InventoryManager';
 

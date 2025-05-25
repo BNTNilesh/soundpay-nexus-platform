@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { RefreshCw, CheckCircle, AlertCircle, Clock, Database, Zap } from 'lucide-react';
+import { RefreshCw, CheckCircle, AlertCircle, Clock, Database, Zap, Package } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Product } from './InventoryManager';
 
