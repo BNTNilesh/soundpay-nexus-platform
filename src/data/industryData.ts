@@ -19,7 +19,7 @@ export interface CachedStore {
   id: string;
   name: string;
   type: string;
-  location: string;
+  locationId: string;
   manager: string;
   status: 'active' | 'inactive' | 'maintenance';
   productCount: number;
@@ -95,7 +95,7 @@ export const cachedStores: CachedStore[] = [
     id: '1',
     name: 'Tactical Firearms Center',
     type: 'Firearms',
-    location: 'Downtown Firearms & Tobacco',
+    locationId: '1',
     manager: 'Steve Thompson',
     status: 'active',
     productCount: 156,
@@ -108,7 +108,7 @@ export const cachedStores: CachedStore[] = [
     id: '2',
     name: 'Premium Tobacco Lounge',
     type: 'Tobacco',
-    location: 'Downtown Firearms & Tobacco',
+    locationId: '1',
     manager: 'Rebecca Chen',
     status: 'active',
     productCount: 89,
@@ -121,7 +121,7 @@ export const cachedStores: CachedStore[] = [
     id: '3',
     name: 'Eagle Point Ammunition',
     type: 'Ammunition',
-    location: 'Westside Gun & Smoke Shop',
+    locationId: '2',
     manager: 'Carlos Martinez',
     status: 'maintenance',
     productCount: 234,

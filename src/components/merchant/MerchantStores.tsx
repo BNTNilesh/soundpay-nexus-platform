@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -17,14 +16,14 @@ const MerchantStores = () => {
   const [newStore, setNewStore] = useState({
     name: '',
     type: '',
-    location: '',
+    locationId: '',
     manager: '',
     openingHours: '',
   });
 
   const [stores, setStores] = useState<CachedStore[]>(cachedStores);
 
-  const locations = cachedLocations.map(loc => loc.name);
+  const locations = cachedLocations;
 
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
@@ -36,7 +35,7 @@ const MerchantStores = () => {
   };
 
   const handleAddStore = () => {
-    if (!newStore.name || !newStore.type || !newStore.location) {
+    if (!newStore.name || !newStore.type || !newStore.locationId) {
       toast({
         title: "Error",
         description: "Please fill in all required fields.",
@@ -49,7 +48,7 @@ const MerchantStores = () => {
       id: Date.now().toString(),
       name: newStore.name,
       type: newStore.type,
-      location: newStore.location,
+      locationId: newStore.locationId,
       manager: newStore.manager,
       status: 'active',
       productCount: 0,
@@ -60,7 +59,7 @@ const MerchantStores = () => {
     };
 
     setStores([...stores, store]);
-    setNewStore({ name: '', type: '', location: '', manager: '', openingHours: '' });
+    setNewStore({ name: '', type: '', locationId: '', manager: '', openingHours: '' });
     setIsAddDialogOpen(false);
     
     toast({
@@ -93,6 +92,10 @@ const MerchantStores = () => {
   const totalRevenue = stores.reduce((sum, s) => sum + s.dailyRevenue, 0);
   const totalProducts = stores.reduce((sum, s) => sum + s.productCount, 0);
   const totalEmployees = stores.reduce((sum, s) => sum + s.employees, 0);
+
+  const getLocationName = (locationId: string) => {
+    return locations.find(loc => loc.id === locationId)?.name || 'Unknown Location';
+  };
 
   return (
     <div className="space-y-6">
@@ -209,13 +212,13 @@ const MerchantStores = () => {
                     </div>
                     <div>
                       <Label htmlFor="location">Location</Label>
-                      <Select value={newStore.location} onValueChange={(value) => setNewStore({ ...newStore, location: value })}>
+                      <Select value={newStore.locationId} onValueChange={(value) => setNewStore({ ...newStore, locationId: value })}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select location" />
                         </SelectTrigger>
                         <SelectContent>
-                          {locations.map((location) => (
-                            <SelectItem key={location} value={location}>{location}</SelectItem>
+                          {locations.filter(loc => loc.status === 'active').map((location) => (
+                            <SelectItem key={location.id} value={location.id}>{location.name}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
@@ -299,7 +302,7 @@ const MerchantStores = () => {
                       </div>
                       
                       <div className="text-sm text-gray-500">
-                        <p>Location: {store.location}</p>
+                        <p>Location: {getLocationName(store.locationId)}</p>
                         {store.manager && <p>Manager: {store.manager}</p>}
                         <p>Created: {store.createdAt}</p>
                       </div>
