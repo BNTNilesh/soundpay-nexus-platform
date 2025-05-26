@@ -4,9 +4,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Building2, Package, MapPin, BarChart3, LogOut, Database } from 'lucide-react';
+import { Building2, Package, MapPin, BarChart3, LogOut, Database, FileText, Settings } from 'lucide-react';
 import InventoryManager from './InventoryManager';
 import MerchantAnalytics from './MerchantAnalytics';
+import MerchantReports from './MerchantReports';
+import MerchantSettings from './MerchantSettings';
 
 interface User {
   id: string;
@@ -57,13 +59,13 @@ const MerchantDashboard = ({ user, onLogout }: MerchantDashboardProps) => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 bg-white/50 backdrop-blur-sm p-1 rounded-xl">
+          <TabsList className="grid w-full grid-cols-4 bg-white/50 backdrop-blur-sm p-1 rounded-xl">
             <TabsTrigger 
               value="inventory" 
               className="flex items-center space-x-2 data-[state=active]:bg-white data-[state=active]:shadow-sm"
             >
               <Database className="h-4 w-4" />
-              <span>Inventory Management</span>
+              <span>Inventory</span>
             </TabsTrigger>
             <TabsTrigger 
               value="analytics" 
@@ -71,6 +73,20 @@ const MerchantDashboard = ({ user, onLogout }: MerchantDashboardProps) => {
             >
               <BarChart3 className="h-4 w-4" />
               <span>Analytics</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="reports" 
+              className="flex items-center space-x-2 data-[state=active]:bg-white data-[state=active]:shadow-sm"
+            >
+              <FileText className="h-4 w-4" />
+              <span>Reports</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="settings" 
+              className="flex items-center space-x-2 data-[state=active]:bg-white data-[state=active]:shadow-sm"
+            >
+              <Settings className="h-4 w-4" />
+              <span>Settings</span>
             </TabsTrigger>
           </TabsList>
 
@@ -80,6 +96,14 @@ const MerchantDashboard = ({ user, onLogout }: MerchantDashboardProps) => {
 
           <TabsContent value="analytics" className="space-y-6">
             <MerchantAnalytics />
+          </TabsContent>
+
+          <TabsContent value="reports" className="space-y-6">
+            <MerchantReports />
+          </TabsContent>
+
+          <TabsContent value="settings" className="space-y-6">
+            <MerchantSettings />
           </TabsContent>
         </Tabs>
       </div>
