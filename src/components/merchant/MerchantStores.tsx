@@ -9,20 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Store, Plus, Edit, Trash2, Clock, Package, DollarSign, Users } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
-
-interface StoreData {
-  id: string;
-  name: string;
-  type: string;
-  location: string;
-  manager: string;
-  status: 'active' | 'inactive' | 'maintenance';
-  productCount: number;
-  dailyRevenue: number;
-  employees: number;
-  openingHours: string;
-  createdAt: string;
-}
+import { cachedStores, cachedLocations, storeTypes, CachedStore } from '@/data/industryData';
 
 const MerchantStores = () => {
   const { toast } = useToast();
@@ -35,50 +22,9 @@ const MerchantStores = () => {
     openingHours: '',
   });
 
-  const [stores, setStores] = useState<StoreData[]>([
-    {
-      id: '1',
-      name: 'Electronics Hub',
-      type: 'Electronics',
-      location: 'Downtown Location',
-      manager: 'Alice Chen',
-      status: 'active',
-      productCount: 156,
-      dailyRevenue: 2450.00,
-      employees: 8,
-      openingHours: '9:00 AM - 9:00 PM',
-      createdAt: '2024-01-01',
-    },
-    {
-      id: '2',
-      name: 'Fashion Corner',
-      type: 'Clothing',
-      location: 'Mall Location',
-      manager: 'Bob Martinez',
-      status: 'active',
-      productCount: 89,
-      dailyRevenue: 1890.00,
-      employees: 5,
-      openingHours: '10:00 AM - 10:00 PM',
-      createdAt: '2024-01-05',
-    },
-    {
-      id: '3',
-      name: 'Quick Mart',
-      type: 'Convenience',
-      location: 'Airport Terminal',
-      manager: 'Carol Wang',
-      status: 'maintenance',
-      productCount: 234,
-      dailyRevenue: 1200.00,
-      employees: 3,
-      openingHours: '6:00 AM - 11:00 PM',
-      createdAt: '2024-01-10',
-    },
-  ]);
+  const [stores, setStores] = useState<CachedStore[]>(cachedStores);
 
-  const locations = ['Downtown Location', 'Mall Location', 'Airport Terminal'];
-  const storeTypes = ['Electronics', 'Clothing', 'Convenience', 'Food & Beverage', 'Home & Garden', 'Books'];
+  const locations = cachedLocations.map(loc => loc.name);
 
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
@@ -99,7 +45,7 @@ const MerchantStores = () => {
       return;
     }
 
-    const store: StoreData = {
+    const store: CachedStore = {
       id: Date.now().toString(),
       name: newStore.name,
       type: newStore.type,
@@ -221,7 +167,7 @@ const MerchantStores = () => {
                 <Store className="h-5 w-5 text-blue-600" />
                 <span>Store Management</span>
               </CardTitle>
-              <CardDescription>Manage your stores across different locations</CardDescription>
+              <CardDescription>Manage your firearms and tobacco stores across different locations</CardDescription>
             </div>
             <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
               <DialogTrigger asChild>
@@ -234,7 +180,7 @@ const MerchantStores = () => {
                 <DialogHeader>
                   <DialogTitle>Add New Store</DialogTitle>
                   <DialogDescription>
-                    Create a new store at one of your locations.
+                    Create a new firearms or tobacco store at one of your locations.
                   </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4">
@@ -390,7 +336,7 @@ const MerchantStores = () => {
             <div className="text-center py-12">
               <Store className="h-12 w-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">No stores yet</h3>
-              <p className="text-gray-600 mb-6">Create your first store to start managing inventory.</p>
+              <p className="text-gray-600 mb-6">Create your first firearms or tobacco store to start managing inventory.</p>
               <Button onClick={() => setIsAddDialogOpen(true)}>
                 <Plus className="h-4 w-4 mr-2" />
                 Add Your First Store

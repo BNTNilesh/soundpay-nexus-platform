@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,172 +10,21 @@ import StoreManager from './StoreManager';
 import ProductManager from './ProductManager';
 import POSSyncDashboard from './POSSyncDashboard';
 import { useToast } from "@/hooks/use-toast";
+import { cachedLocations, cachedStores, cachedProducts, CachedLocation, CachedStore, CachedProduct } from '@/data/industryData';
 
-export interface Location {
-  id: string;
-  name: string;
-  address: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  phone: string;
-  email: string;
-  manager: string;
-  status: 'active' | 'inactive';
-  storeCount: number;
-  createdAt: string;
-}
-
-export interface Store {
-  id: string;
-  name: string;
-  type: string;
-  locationId: string;
-  manager: string;
-  status: 'active' | 'inactive' | 'maintenance';
-  productCount: number;
-  dailyRevenue: number;
-  employees: number;
-  openingHours: string;
-  createdAt: string;
-}
-
-export interface Product {
-  id: string;
-  name: string;
-  sku: string;
-  category: string;
-  price: number;
-  cost: number;
-  quantity: number;
-  minStock: number;
-  storeId: string;
-  locationId: string;
-  status: 'active' | 'inactive' | 'out_of_stock';
-  supplier: string;
-  description: string;
-  createdAt: string;
-  lastSynced: string;
-}
+// Re-export interfaces for compatibility
+export interface Location extends CachedLocation {}
+export interface Store extends CachedStore {}
+export interface Product extends CachedProduct {}
 
 const InventoryManager = () => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('overview');
 
-  // Updated dummy data for Ammo and Smoke industry
-  const [locations, setLocations] = useState<Location[]>([
-    {
-      id: '1',
-      name: 'Downtown Firearms & Tobacco',
-      address: '1247 Liberty Avenue',
-      city: 'Phoenix',
-      state: 'AZ',
-      zipCode: '85001',
-      phone: '(602) 555-0123',
-      email: 'downtown@gunsmoke.com',
-      manager: 'Jake Morrison',
-      status: 'active',
-      storeCount: 3,
-      createdAt: '2024-01-01',
-    },
-    {
-      id: '2',
-      name: 'Westside Gun & Smoke Shop',
-      address: '892 Range Road',
-      city: 'Houston',
-      state: 'TX',
-      zipCode: '77001',
-      phone: '(713) 555-0456',
-      email: 'westside@gunsmoke.com',
-      manager: 'Maria Rodriguez',
-      status: 'active',
-      storeCount: 2,
-      createdAt: '2024-01-05',
-    },
-  ]);
-
-  const [stores, setStores] = useState<Store[]>([
-    {
-      id: '1',
-      name: 'Tactical Firearms Center',
-      type: 'Firearms',
-      locationId: '1',
-      manager: 'Steve Thompson',
-      status: 'active',
-      productCount: 156,
-      dailyRevenue: 4250.00,
-      employees: 8,
-      openingHours: '8:00 AM - 8:00 PM',
-      createdAt: '2024-01-01',
-    },
-    {
-      id: '2',
-      name: 'Premium Tobacco Lounge',
-      type: 'Tobacco',
-      locationId: '1',
-      manager: 'Rebecca Chen',
-      status: 'active',
-      productCount: 89,
-      dailyRevenue: 1890.00,
-      employees: 5,
-      openingHours: '10:00 AM - 10:00 PM',
-      createdAt: '2024-01-05',
-    },
-  ]);
-
-  const [products, setProducts] = useState<Product[]>([
-    {
-      id: '1',
-      name: 'Glock 19 Gen5',
-      sku: 'GLK19G5-9MM',
-      category: 'Handguns',
-      price: 549.99,
-      cost: 425.00,
-      quantity: 12,
-      minStock: 3,
-      storeId: '1',
-      locationId: '1',
-      status: 'active',
-      supplier: 'Glock USA',
-      description: '9mm Compact Pistol with 15-round capacity',
-      createdAt: '2024-01-01',
-      lastSynced: '2024-01-20 10:30:00',
-    },
-    {
-      id: '2',
-      name: 'Federal Premium 9mm FMJ',
-      sku: 'FED-9MM-115-FMJ',
-      category: 'Ammunition',
-      price: 24.99,
-      cost: 18.50,
-      quantity: 2,
-      minStock: 10,
-      storeId: '1',
-      locationId: '1',
-      status: 'out_of_stock',
-      supplier: 'Federal Ammunition',
-      description: '115gr Full Metal Jacket - Box of 50',
-      createdAt: '2024-01-03',
-      lastSynced: '2024-01-20 10:30:00',
-    },
-    {
-      id: '3',
-      name: 'Cohiba Robusto Cigars',
-      sku: 'COH-ROB-5PK',
-      category: 'Premium Cigars',
-      price: 89.99,
-      cost: 65.00,
-      quantity: 25,
-      minStock: 5,
-      storeId: '2',
-      locationId: '1',
-      status: 'active',
-      supplier: 'Premium Tobacco Imports',
-      description: 'Hand-rolled Dominican cigars - 5 pack',
-      createdAt: '2024-01-10',
-      lastSynced: '2024-01-20 10:30:00',
-    },
-  ]);
+  // Use cached data from industryData
+  const [locations, setLocations] = useState<Location[]>(cachedLocations);
+  const [stores, setStores] = useState<Store[]>(cachedStores);
+  const [products, setProducts] = useState<Product[]>(cachedProducts);
 
   // Update store count when stores change
   const updateLocationStoreCounts = () => {
@@ -222,7 +72,7 @@ const InventoryManager = () => {
     totalStores: stores.length,
     activeStores: stores.filter(s => s.status === 'active').length,
     totalProducts: products.length,
-    lowStockProducts: products.filter(p => p.quantity <= p.minStock).length,
+    lowStockProducts: products.filter(p => p.quantity && p.minStock && p.quantity <= p.minStock).length,
     outOfStockProducts: products.filter(p => p.status === 'out_of_stock').length,
   };
 
@@ -311,7 +161,7 @@ const InventoryManager = () => {
           <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
             <CardHeader>
               <CardTitle>Inventory Overview</CardTitle>
-              <CardDescription>Summary of your inventory management system</CardDescription>
+              <CardDescription>Summary of your firearms and tobacco inventory management system</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

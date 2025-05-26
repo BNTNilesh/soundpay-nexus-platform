@@ -9,16 +9,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { Package, Plus, Edit, Trash2, Search } from 'lucide-react';
-
-interface Product {
-  id: string;
-  name: string;
-  sku: string;
-  category: string;
-  price: number;
-  stock: number;
-  status: 'active' | 'inactive';
-}
+import { cachedProducts, productCategories, CachedProduct } from '@/data/industryData';
 
 interface ProductManagerProps {
   isOpen: boolean;
@@ -28,14 +19,8 @@ interface ProductManagerProps {
 const ProductManager = ({ isOpen, onClose }: ProductManagerProps) => {
   const { toast } = useToast();
   
-  // Updated product data for Ammo and Smoke industry
-  const [products, setProducts] = useState<Product[]>([
-    { id: '1', name: 'Remington 870 Shotgun', sku: 'REM870-12GA', category: 'Shotguns', price: 449.99, stock: 8, status: 'active' },
-    { id: '2', name: 'Winchester .308 Ammo', sku: 'WIN308-150GR', category: 'Ammunition', price: 32.99, stock: 120, status: 'active' },
-    { id: '3', name: 'Romeo y Julieta Cigars', sku: 'RJ-CHU-5PK', category: 'Cigars', price: 45.99, stock: 0, status: 'inactive' },
-    { id: '4', name: 'Glock 17 Gen5', sku: 'GLK17G5-9MM', category: 'Handguns', price: 599.99, stock: 5, status: 'active' },
-    { id: '5', name: 'Marlboro Gold Pack', sku: 'MAR-GLD-PK', category: 'Cigarettes', price: 8.99, stock: 200, status: 'active' },
-  ]);
+  // Use cached product data for Ammo and Smoke industry
+  const [products, setProducts] = useState<CachedProduct[]>(cachedProducts);
   
   const [isAddProductOpen, setIsAddProductOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -64,7 +49,7 @@ const ProductManager = ({ isOpen, onClose }: ProductManagerProps) => {
       return;
     }
 
-    const product: Product = {
+    const product: CachedProduct = {
       id: Date.now().toString(),
       name: newProduct.name,
       sku: newProduct.sku,
@@ -72,6 +57,7 @@ const ProductManager = ({ isOpen, onClose }: ProductManagerProps) => {
       price: parseFloat(newProduct.price),
       stock: parseInt(newProduct.stock) || 0,
       status: 'active',
+      createdAt: new Date().toISOString().split('T')[0],
     };
 
     setProducts([...products, product]);
@@ -108,7 +94,7 @@ const ProductManager = ({ isOpen, onClose }: ProductManagerProps) => {
               <span>Product Management</span>
             </DialogTitle>
             <DialogDescription>
-              Manage your product inventory and catalog.
+              Manage your firearms, ammunition, and tobacco product inventory.
             </DialogDescription>
           </DialogHeader>
           
@@ -149,7 +135,7 @@ const ProductManager = ({ isOpen, onClose }: ProductManagerProps) => {
                       <TableCell>{product.sku}</TableCell>
                       <TableCell>{product.category}</TableCell>
                       <TableCell>${product.price.toFixed(2)}</TableCell>
-                      <TableCell>{product.stock}</TableCell>
+                      <TableCell>{product.stock || product.quantity || 0}</TableCell>
                       <TableCell>{getStatusBadge(product.status)}</TableCell>
                       <TableCell>
                         <div className="flex space-x-2">
@@ -180,7 +166,7 @@ const ProductManager = ({ isOpen, onClose }: ProductManagerProps) => {
           <DialogHeader>
             <DialogTitle>Add New Product</DialogTitle>
             <DialogDescription>
-              Add a new product to your inventory.
+              Add a new firearms, ammunition, or tobacco product to your inventory.
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleAddProduct} className="space-y-4">
@@ -212,7 +198,7 @@ const ProductManager = ({ isOpen, onClose }: ProductManagerProps) => {
                 id="category"
                 value={newProduct.category}
                 onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
-                placeholder="Enter category"
+                placeholder="e.g., Handguns, Ammunition, Cigars"
                 required
               />
             </div>

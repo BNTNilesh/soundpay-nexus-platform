@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +11,7 @@ import AddUserForm from './AddUserForm';
 import MerchantRegistrationForm from './MerchantRegistrationForm';
 import POSSyncManager from './POSSyncManager';
 import ProductManager from './ProductManager';
+import { cachedMerchants, CachedMerchant } from '@/data/industryData';
 
 const DashboardOverview = () => {
   const { toast } = useToast();
@@ -18,18 +20,12 @@ const DashboardOverview = () => {
   const [isPOSSyncOpen, setIsPOSSyncOpen] = useState(false);
   const [isProductManagerOpen, setIsProductManagerOpen] = useState(false);
   
-  // Updated merchant data for Ammo and Smoke industry
-  const [merchants, setMerchants] = useState([
-    { id: 1, name: "Tactical Defense Supply", email: "contact@tacticaldefense.com", status: "Active", revenue: "$78,450", products: 285, locations: 4 },
-    { id: 2, name: "Liberty Gun & Smoke", email: "info@libertygunsmoke.com", status: "Active", revenue: "$65,280", products: 198, locations: 3 },
-    { id: 3, name: "Eagle Point Firearms", email: "hello@eaglepointfirearms.com", status: "Pending", revenue: "$34,650", products: 127, locations: 2 },
-    { id: 4, name: "Patriot Arms & Tobacco", email: "admin@patriotarms.com", status: "Active", revenue: "$92,130", products: 347, locations: 6 },
-    { id: 5, name: "Smoke & Steel Co.", email: "sales@smokesteel.com", status: "Inactive", revenue: "$18,920", products: 89, locations: 1 },
-  ]);
+  // Use cached merchant data
+  const [merchants, setMerchants] = useState<CachedMerchant[]>(cachedMerchants);
 
   const stats = [
     { title: "Total Users", value: "247", change: "+12%", icon: Users, color: "from-blue-500 to-indigo-500" },
-    { title: "Active Merchants", value: merchants.filter(m => m.status === "Active").length.toString(), change: "+8%", icon: Building2, color: "from-green-500 to-emerald-500" },
+    { title: "Active Dealers", value: merchants.filter(m => m.status === "Active").length.toString(), change: "+8%", icon: Building2, color: "from-green-500 to-emerald-500" },
     { title: "Products", value: merchants.reduce((acc, m) => acc + m.products, 0).toString(), change: "+24%", icon: Package, color: "from-purple-500 to-pink-500" },
     { title: "Revenue", value: "$289K", change: "+18%", icon: DollarSign, color: "from-orange-500 to-red-500" },
   ];
