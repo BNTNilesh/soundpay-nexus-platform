@@ -18,26 +18,28 @@ const DashboardOverview = () => {
   const [isPOSSyncOpen, setIsPOSSyncOpen] = useState(false);
   const [isProductManagerOpen, setIsProductManagerOpen] = useState(false);
   
+  // Updated merchant data for Ammo and Smoke industry
   const [merchants, setMerchants] = useState([
-    { id: 1, name: "TechStore Inc.", email: "contact@techstore.com", status: "Active", revenue: "$45,230", products: 127, locations: 3 },
-    { id: 2, name: "Fashion Hub", email: "info@fashionhub.com", status: "Active", revenue: "$32,180", products: 89, locations: 2 },
-    { id: 3, name: "Green Market", email: "hello@greenmarket.com", status: "Pending", revenue: "$12,450", products: 45, locations: 1 },
-    { id: 4, name: "Sports Central", email: "admin@sportscentral.com", status: "Active", revenue: "$67,890", products: 234, locations: 5 },
-    { id: 5, name: "Book Corner", email: "books@bookcorner.com", status: "Inactive", revenue: "$8,920", products: 156, locations: 1 },
+    { id: 1, name: "Tactical Defense Supply", email: "contact@tacticaldefense.com", status: "Active", revenue: "$78,450", products: 285, locations: 4 },
+    { id: 2, name: "Liberty Gun & Smoke", email: "info@libertygunsmoke.com", status: "Active", revenue: "$65,280", products: 198, locations: 3 },
+    { id: 3, name: "Eagle Point Firearms", email: "hello@eaglepointfirearms.com", status: "Pending", revenue: "$34,650", products: 127, locations: 2 },
+    { id: 4, name: "Patriot Arms & Tobacco", email: "admin@patriotarms.com", status: "Active", revenue: "$92,130", products: 347, locations: 6 },
+    { id: 5, name: "Smoke & Steel Co.", email: "sales@smokesteel.com", status: "Inactive", revenue: "$18,920", products: 89, locations: 1 },
   ]);
 
   const stats = [
     { title: "Total Users", value: "247", change: "+12%", icon: Users, color: "from-blue-500 to-indigo-500" },
     { title: "Active Merchants", value: merchants.filter(m => m.status === "Active").length.toString(), change: "+8%", icon: Building2, color: "from-green-500 to-emerald-500" },
     { title: "Products", value: merchants.reduce((acc, m) => acc + m.products, 0).toString(), change: "+24%", icon: Package, color: "from-purple-500 to-pink-500" },
-    { title: "Revenue", value: "$342K", change: "+18%", icon: DollarSign, color: "from-orange-500 to-red-500" },
+    { title: "Revenue", value: "$289K", change: "+18%", icon: DollarSign, color: "from-orange-500 to-red-500" },
   ];
 
+  // Updated activity for Ammo and Smoke industry
   const recentActivity = [
-    { action: "New merchant registered", user: "TechStore Inc.", time: "2 minutes ago", type: "registration" },
-    { action: "Product inventory updated", user: "Fashion Hub", time: "15 minutes ago", type: "update" },
-    { action: "User role changed", user: "john.doe@example.com", time: "1 hour ago", type: "permission" },
-    { action: "System sync completed", user: "SoundPayment POS", time: "2 hours ago", type: "sync" },
+    { action: "New FFL dealer registered", user: "Tactical Defense Supply", time: "2 minutes ago", type: "registration" },
+    { action: "Ammunition inventory updated", user: "Liberty Gun & Smoke", time: "15 minutes ago", type: "update" },
+    { action: "ATF compliance check completed", user: "Eagle Point Firearms", time: "1 hour ago", type: "permission" },
+    { action: "POS sync with ATF database", user: "SoundPayment POS", time: "2 hours ago", type: "sync" },
   ];
 
   const handleAddUser = () => {
@@ -127,9 +129,9 @@ const DashboardOverview = () => {
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <Building2 className="h-5 w-5 text-blue-600" />
-            <span>Merchants Overview</span>
+            <span>FFL Dealers Overview</span>
           </CardTitle>
-          <CardDescription>Manage and monitor all registered merchants</CardDescription>
+          <CardDescription>Manage and monitor all registered firearms dealers and tobacco shops</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
@@ -184,7 +186,7 @@ const DashboardOverview = () => {
               <Activity className="h-5 w-5 text-blue-600" />
               <span>Recent Activity</span>
             </CardTitle>
-            <CardDescription>Latest system activities and updates</CardDescription>
+            <CardDescription>Latest system activities and compliance updates</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -237,10 +239,10 @@ const DashboardOverview = () => {
             </div>
             <div>
               <div className="flex justify-between text-sm mb-2">
-                <span className="font-medium text-gray-700">User Satisfaction</span>
-                <span className="text-gray-600">92%</span>
+                <span className="font-medium text-gray-700">ATF Compliance</span>
+                <span className="text-gray-600">99%</span>
               </div>
-              <Progress value={92} className="h-2" />
+              <Progress value={99} className="h-2" />
             </div>
           </CardContent>
         </Card>
@@ -271,7 +273,7 @@ const DashboardOverview = () => {
               <div className="p-3 bg-green-500 rounded-full mb-2 group-hover:scale-110 transition-transform duration-200">
                 <Building2 className="h-5 w-5 text-white" />
               </div>
-              <span className="text-sm font-medium text-gray-700">New Merchant</span>
+              <span className="text-sm font-medium text-gray-700">New Dealer</span>
             </button>
             
             <button

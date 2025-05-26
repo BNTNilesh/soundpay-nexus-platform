@@ -27,10 +27,14 @@ interface ProductManagerProps {
 
 const ProductManager = ({ isOpen, onClose }: ProductManagerProps) => {
   const { toast } = useToast();
+  
+  // Updated product data for Ammo and Smoke industry
   const [products, setProducts] = useState<Product[]>([
-    { id: '1', name: 'Wireless Headphones', sku: 'WH001', category: 'Electronics', price: 99.99, stock: 45, status: 'active' },
-    { id: '2', name: 'Coffee Mug', sku: 'CM002', category: 'Kitchen', price: 12.50, stock: 120, status: 'active' },
-    { id: '3', name: 'Notebook', sku: 'NB003', category: 'Stationery', price: 8.99, stock: 0, status: 'inactive' },
+    { id: '1', name: 'Remington 870 Shotgun', sku: 'REM870-12GA', category: 'Shotguns', price: 449.99, stock: 8, status: 'active' },
+    { id: '2', name: 'Winchester .308 Ammo', sku: 'WIN308-150GR', category: 'Ammunition', price: 32.99, stock: 120, status: 'active' },
+    { id: '3', name: 'Romeo y Julieta Cigars', sku: 'RJ-CHU-5PK', category: 'Cigars', price: 45.99, stock: 0, status: 'inactive' },
+    { id: '4', name: 'Glock 17 Gen5', sku: 'GLK17G5-9MM', category: 'Handguns', price: 599.99, stock: 5, status: 'active' },
+    { id: '5', name: 'Marlboro Gold Pack', sku: 'MAR-GLD-PK', category: 'Cigarettes', price: 8.99, stock: 200, status: 'active' },
   ]);
   
   const [isAddProductOpen, setIsAddProductOpen] = useState(false);

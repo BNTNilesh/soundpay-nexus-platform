@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -31,7 +30,8 @@ const StoreManager = ({ stores, setStores, locations, products, onStoreUpdate }:
     openingHours: '',
   });
 
-  const storeTypes = ['Electronics', 'Clothing', 'Convenience', 'Food & Beverage', 'Home & Garden', 'Books', 'Health & Beauty'];
+  // Updated store types for Ammo and Smoke industry
+  const storeTypes = ['Firearms', 'Ammunition', 'Hunting Gear', 'Tobacco', 'Vaping', 'Cigars', 'Accessories', 'Training'];
 
   const resetForm = () => {
     setFormData({ name: '', type: '', locationId: '', manager: '', openingHours: '' });
