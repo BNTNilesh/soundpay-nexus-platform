@@ -51,7 +51,7 @@ const LoginForm = ({ onLogin, onBack }: LoginFormProps) => {
       } else {
         toast({
           title: "Login Failed",
-          description: "Invalid email or password. Use 'password123' for demo.",
+          description: "Invalid email or password.",
           variant: "destructive",
         });
       }
@@ -131,17 +131,6 @@ const LoginForm = ({ onLogin, onBack }: LoginFormProps) => {
                 {isLoading ? "Signing In..." : "Sign In"}
               </Button>
             </form>
-
-            <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-              <p className="text-sm text-blue-800 font-medium mb-2">Demo Accounts:</p>
-              <div className="text-xs text-blue-700 space-y-1">
-                <div>Admin: admin@merchhub.com</div>
-                <div>Editor: editor@merchhub.com</div>
-                <div>Viewer: viewer@merchhub.com</div>
-                <div>Merchant: merchant@example.com</div>
-                <div className="font-medium">Password: password123</div>
-              </div>
-            </div>
           </CardContent>
         </Card>
       </div>
